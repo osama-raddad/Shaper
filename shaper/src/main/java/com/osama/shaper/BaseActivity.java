@@ -23,7 +23,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     private ActivityComponentManager activityComponentManager;
 
     @Override
-    public final void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         activityComponentManager = ActivityComponentManager.getInstance(this);
