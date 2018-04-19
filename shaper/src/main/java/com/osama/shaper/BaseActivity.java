@@ -10,8 +10,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.transition.Slide;
 import android.view.Gravity;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-import com.orhanobut.logger.Logger;
+
+import com.osama.shaper.dependencies.BaseActivityModule;
+import com.osama.shaper.dependencies.BaseApplication;
+import com.osama.shaper.dependencies.DaggerBaseActivityComponent;
+import com.osama.shaper.dependencies.GithubRepo;
+import com.osama.shaper.dependencies.network.GithubService;
+
+import java.util.List;
+
+import javax.inject.Inject;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static android.animation.LayoutTransition.APPEARING;
 import static android.animation.LayoutTransition.CHANGE_APPEARING;
@@ -21,13 +35,31 @@ import static android.animation.LayoutTransition.DISAPPEARING;
 
 public abstract class BaseActivity extends AppCompatActivity {
     private ActivityComponentManager activityComponentManager;
-
+    @Inject
+    GithubService githubService;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         activityComponentManager = ActivityComponentManager.getInstance(this);
-        Logger.d("BaseActivity : onCreate", this.getClass().getSimpleName());
+
+        DaggerBaseActivityComponent.builder()
+                .baseActivityModule(new BaseActivityModule(this))
+                .baseApplicationComponent(BaseApplication.get(this).component())
+                .build().inject(this);
+
+                githubService.getAllRepos().enqueue(new Callback<List<GithubRepo>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<GithubRepo>> call, @NonNull Response<List<GithubRepo>> response) {
+                Toast.makeText(BaseActivity.this,response.body().get(0).fullName,Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<GithubRepo>> call, @NonNull Throwable t) {
+
+            }
+        });
+
         onCreate(activityComponentManager,savedInstanceState);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
@@ -48,7 +80,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     public final void onResume() {
-        Logger.d("BaseActivity : onResume", this.getClass().getSimpleName());
         onResume(activityComponentManager);
         activityComponentManager.triggerOnResume();
         super.onResume();
@@ -60,7 +91,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     final protected void onStop() {
-        Logger.d("BaseActivity : onStop", this.getClass().getSimpleName());
         onStop(activityComponentManager);
         activityComponentManager.triggerOnStop();
         super.onStop();
