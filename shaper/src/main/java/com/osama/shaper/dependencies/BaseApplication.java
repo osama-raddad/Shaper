@@ -23,7 +23,6 @@ public class BaseApplication extends Application {
         component = DaggerBaseApplicationComponent.builder()
                 .contextModule(new ContextModule(this))
                 .build();
-
     }
 
     public BaseApplicationComponent component() {
