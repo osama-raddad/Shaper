@@ -1,6 +1,5 @@
 package com.osama.shaper.dependencies;
 
-import com.osama.shaper.dependencies.network.GithubService;
 import com.squareup.picasso.Picasso;
 
 import dagger.Component;
@@ -11,5 +10,5 @@ public interface BaseApplicationComponent {
 
     Picasso getPicasso();
 
-    GithubService getService();
+    Object getService();
 }

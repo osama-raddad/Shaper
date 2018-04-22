@@ -17,12 +17,7 @@ public class NetworkModule {
     @Provides
     @BaseApplicationScope
     public HttpLoggingInterceptor loggingInterceptor() {
-        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
-            @Override
-            public void log(String message) {
-                Timber.i(message);
-            }
-        });
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor(message -> Timber.i(message));
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         return interceptor;
     }

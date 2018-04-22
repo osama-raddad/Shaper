@@ -1,11 +1,9 @@
-package com.osama.shaper.dependencies.network;
+package com.osama.shaper;
 
-
-import com.osama.shaper.dependencies.GithubRepo;
-import com.osama.shaper.dependencies.GithubUser;
 
 import java.util.List;
 
+import rx.Observable;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -16,8 +14,8 @@ public interface GithubService {
   Call<List<GithubRepo>> getReposForUser(@Path("username") String username);
 
   @GET("repositories")
-  Call<List<GithubRepo>> getAllRepos();
+  Observable<List<GithubRepo>> getAllRepos();
 
   @GET("users/{username}")
-  Call<GithubUser> getUser(@Path("username") String username);
+  Observable<GithubUser> getUser(@Path("username") String username);
 }

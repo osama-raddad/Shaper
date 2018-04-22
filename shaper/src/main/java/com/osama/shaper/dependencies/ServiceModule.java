@@ -3,7 +3,6 @@ package com.osama.shaper.dependencies;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.osama.shaper.dependencies.network.DateTimeConverter;
-import com.osama.shaper.dependencies.network.GithubService;
 
 import org.joda.time.DateTime;
 
@@ -11,15 +10,17 @@ import dagger.Module;
 import dagger.Provides;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-@Module(includes = NetworkModule.class)
+@Module(includes = {NetworkModule.class, APIEndPointModule.class})
 public class ServiceModule {
+
 
     @Provides
     @BaseApplicationScope
-    public GithubService githubService(Retrofit gitHubRetrofit) {
-        return gitHubRetrofit.create(GithubService.class);
+    public Object githubService(Retrofit gitHubRetrofit, @ApplicationEndPoint Object service) {
+        return gitHubRetrofit.create((Class) service);
     }
 
     @Provides
@@ -32,11 +33,12 @@ public class ServiceModule {
 
     @Provides
     @BaseApplicationScope
-    public Retrofit retrofit(OkHttpClient okHttpClient, Gson gson) {
+    public Retrofit retrofit(OkHttpClient okHttpClient, Gson gson, @ApplicationEndPoint String baseUrl) {
         return new Retrofit.Builder()
+                .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create(gson))
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .client(okHttpClient)
-                .baseUrl("https://api.github.com/")
                 .build();
     }
 
