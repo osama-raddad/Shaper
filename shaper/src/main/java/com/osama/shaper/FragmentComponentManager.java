@@ -15,29 +15,29 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 @SuppressWarnings("unchecked")
-public class FragmentFeatureManager<T extends Fragment> {
+public class FragmentComponentManager<T extends Fragment> {
     private T fragment;
     private List<FragmentComponent> featureList = new ArrayList<>();
 
-    private FragmentFeatureManager(T fragment) {
+    private FragmentComponentManager(T fragment) {
         this.fragment = fragment;
     }
 
-    public static FragmentFeatureManager getInstance(Fragment fragment) {
-        return new FragmentFeatureManager(fragment);
+    public static FragmentComponentManager getInstance(Fragment fragment) {
+        return new FragmentComponentManager(fragment);
     }
 
     private T getCastedFragment(Fragment fragment) {
         return (T) fragment;
     }
 
-    public FragmentFeatureManager add(FragmentComponent... fragmentComponents) {
+    public FragmentComponentManager add(FragmentComponent... fragmentComponents) {
         if (featureList != null)
             featureList.addAll(Arrays.asList(fragmentComponents));
         return this;
     }
 
-    public FragmentFeatureManager add(FragmentComponent fragmentComponent) {
+    public FragmentComponentManager add(FragmentComponent fragmentComponent) {
         if (featureList != null)
             featureList.add(fragmentComponent);
         return this;
@@ -52,11 +52,11 @@ public class FragmentFeatureManager<T extends Fragment> {
                 .subscribe(fragmentFeature -> fragmentFeature.onCreate(getCastedFragment(fragment), savedInstanceState));
     }
 
-    synchronized void triggerOnViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    synchronized void triggerOnResume() {
         Observable.from(featureList)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(throwable -> Log.e(FragmentComponent.class.getSimpleName(), throwable.getMessage(), throwable))
-                .subscribe(fragmentFeature -> fragmentFeature.onViewCreated(getCastedFragment(fragment), view, savedInstanceState));
+                .subscribe(fragmentComponent -> fragmentComponent.onResume(getCastedFragment(fragment)));
     }
 }
