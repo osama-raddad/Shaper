@@ -52,8 +52,10 @@ public abstract class FragmentComponent<T extends Fragment> {
     protected View setComponentView(View view) throws Exception {
         if (!(getComponentView() > 0 && getComponentHostLayout() > 0))
             throw new Exception("the Host Component or Component Layout is not assigned");
-        View rootView = LayoutInflater.from(fragment.getActivity()).inflate(getComponentHostLayout(), root.findViewById(getComponentView()), true);
-        ((ViewGroup) rootView.findViewById(getComponentView())).addView(view);
+        if (!(root.findViewById(getComponentView()) instanceof ComponentView))
+            throw new Exception("the Component View should be instanceof ComponentView");
+            View rootView = LayoutInflater.from(fragment.getActivity()).inflate(getComponentHostLayout(), root.findViewById(getComponentView()), true);
+        ((ViewGroup) root.findViewById(getComponentView())).addView(view);
         setRootView((ViewGroup) rootView);
         return rootView;
     }

@@ -50,6 +50,8 @@ public  class ActivityComponent<T extends Activity> {
     protected View setComponentView(View view) throws Exception {
         if (!(getComponentView() > 0 && getComponentHostLayout() > 0))
             throw new Exception("the Host Component or Component Layout is not assigned");
+        if (!(activity.findViewById(getComponentView()) instanceof ComponentView))
+            throw new Exception("the Component View should be instanceof ComponentView");
         View rootView = LayoutInflater.from(activity).inflate(getComponentHostLayout(), activity.findViewById(getComponentView()), true);
         ((ViewGroup) activity.findViewById(getComponentView())).addView(view);
         setRootView((ViewGroup) rootView);

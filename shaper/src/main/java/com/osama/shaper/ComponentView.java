@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
-class ComponentView extends FrameLayout {
+public class ComponentView extends FrameLayout {
     public ComponentView(@NonNull Context context) {
         super(context);
     }
