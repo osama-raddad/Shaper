@@ -50,14 +50,7 @@ public class ActivityComponentManager<T extends Activity> {
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(throwable -> Log.e(FragmentComponent.class.getSimpleName(), throwable.getMessage(), throwable))
-                .subscribe(activityFeature -> {
-                    if (activityFeature.getComponentView() > 0 && activityFeature.getComponentHostLayout() > 0) {
-                        View rootView = LayoutInflater.from(activity).inflate(activityFeature.getComponentHostLayout(), activity.findViewById(activityFeature.getComponentView()), false);
-                        ((ViewGroup) activity.findViewById(activityFeature.getComponentView())).addView(rootView);
-                        activityFeature.setRootView((ViewGroup) rootView);
-                    }
-                    activityFeature.onCreate(getCastedActivity(activity), mSavedInstanceState);
-                });
+                .subscribe(activityFeature -> activityFeature.onCreate(getCastedActivity(activity), mSavedInstanceState));
     }
 
     synchronized void triggerOnResume() {

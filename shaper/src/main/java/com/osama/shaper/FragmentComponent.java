@@ -12,23 +12,14 @@ import android.view.ViewGroup;
 
 
 public abstract class FragmentComponent<T extends Fragment> {
-    private @IdRes
-    int componentView;
+    private
+    ComponentView componentView;
 
 
-    private @LayoutRes
-    int componentHostLayout;
-    private @Nullable
-    ViewGroup rootView;
-    View root;
     private T fragment;
-    private boolean isCreated;
 
-
-    public void onViewCreated(@NonNull T fragment, View root, @Nullable Bundle mSavedInstanceState) {
+    public void onViewCreated(@NonNull T fragment, View rootView, @Nullable Bundle mSavedInstanceState) {
         this.fragment = fragment;
-        this.root = root;
-        isCreated = true;
     }
 
 
@@ -40,46 +31,21 @@ public abstract class FragmentComponent<T extends Fragment> {
 
     }
 
-    public int getComponentView() {
+    public ComponentView getComponentView() {
         return componentView;
     }
 
-    public int getComponentHostLayout() {
-        return componentHostLayout;
-    }
-
     @Nullable
-    protected View setComponentView(View view) throws Exception {
-        if (!(getComponentView() > 0 && getComponentHostLayout() > 0))
-            throw new Exception("the Host Component or Component Layout is not assigned");
-        if (!(root.findViewById(getComponentView()) instanceof ComponentView))
-            throw new Exception("the Component View should be instanceof ComponentView");
-            View rootView = LayoutInflater.from(fragment.getActivity()).inflate(getComponentHostLayout(), root.findViewById(getComponentView()), true);
-        ((ViewGroup) root.findViewById(getComponentView())).addView(view);
-        setRootView((ViewGroup) rootView);
-        return rootView;
+    protected View setContentView(@LayoutRes int layout) {
+        if (componentView != null) {
+            View rootView = LayoutInflater.from(fragment.getActivity()).inflate(layout, componentView);
+            getComponentView().addView(rootView);
+            return rootView;
+        } else return null;
     }
 
-    public FragmentComponent<T> setComponentLayoutId(int componentView) throws Exception {
-        if (this.componentHostLayout == 0) this.componentView = componentView;
-        if (isCreated)
-            setComponentView(root.findViewById(componentView));
+    public FragmentComponent<T> setComponentView(ComponentView componentView) {
+        if (this.componentView == null) this.componentView = componentView;
         return this;
     }
-
-    public FragmentComponent<T> setComponentHostLayout(int componentHostLayout) {
-        if (this.componentHostLayout == 0) this.componentHostLayout = componentHostLayout;
-        return this;
-    }
-
-    @Nullable
-    public ViewGroup getRootView() {
-        return rootView;
-    }
-
-    public void setRootView(@Nullable ViewGroup rootView) {
-        if (this.rootView == null)
-            this.rootView = rootView;
-    }
-
 }
