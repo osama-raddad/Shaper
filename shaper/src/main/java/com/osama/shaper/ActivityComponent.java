@@ -38,9 +38,7 @@ public class ActivityComponent<T extends Activity> {
     @Nullable
     protected View setContentView(@LayoutRes int layout) {
         if (componentView != null) {
-            View rootView = LayoutInflater.from(activity).inflate(layout, componentView);
-            getComponentView().addView(rootView);
-            return rootView;
+            return LayoutInflater.from(activity).inflate(layout, componentView);
         } else return null;
     }
 

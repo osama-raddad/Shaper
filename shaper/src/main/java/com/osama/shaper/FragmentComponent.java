@@ -38,9 +38,7 @@ public abstract class FragmentComponent<T extends Fragment> {
     @Nullable
     protected View setContentView(@LayoutRes int layout) {
         if (componentView != null) {
-            View rootView = LayoutInflater.from(fragment.getActivity()).inflate(layout, componentView);
-            getComponentView().addView(rootView);
-            return rootView;
+            return LayoutInflater.from(fragment.getActivity()).inflate(layout, componentView);
         } else return null;
     }
 
