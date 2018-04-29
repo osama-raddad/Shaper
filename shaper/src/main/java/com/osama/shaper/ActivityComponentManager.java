@@ -24,7 +24,7 @@ public class ActivityComponentManager<T extends Activity> {
         this.activity = activity;
     }
 
-    public static ActivityComponentManager getInstance(Activity activity) {
+    static ActivityComponentManager getInstance(Activity activity) {
         return new ActivityComponentManager(activity);
     }
 

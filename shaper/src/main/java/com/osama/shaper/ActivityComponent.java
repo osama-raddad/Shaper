@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
-public abstract class ActivityComponent<T extends Activity> {
+public  class ActivityComponent<T extends Activity> {
     private @IdRes
     int componentView;
 

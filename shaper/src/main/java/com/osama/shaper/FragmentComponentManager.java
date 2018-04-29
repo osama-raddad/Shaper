@@ -23,7 +23,7 @@ public class FragmentComponentManager<T extends Fragment> {
         this.fragment = fragment;
     }
 
-    public static FragmentComponentManager getInstance(Fragment fragment) {
+    static FragmentComponentManager getInstance(Fragment fragment) {
         return new FragmentComponentManager(fragment);
     }
 
@@ -44,12 +44,12 @@ public class FragmentComponentManager<T extends Fragment> {
     }
 
 
-    synchronized void triggerOnCreate(@Nullable Bundle savedInstanceState) {
+    synchronized void triggerOnCreate(View view, @Nullable Bundle savedInstanceState) {
         Observable.from(featureList)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(throwable -> Log.e(FragmentComponent.class.getSimpleName(), throwable.getMessage(), throwable))
-                .subscribe(fragmentFeature -> fragmentFeature.onCreate(getCastedFragment(fragment), savedInstanceState));
+                .subscribe(fragmentFeature -> fragmentFeature.onViewCreated(getCastedFragment(fragment), view, savedInstanceState));
     }
 
     synchronized void triggerOnResume() {
