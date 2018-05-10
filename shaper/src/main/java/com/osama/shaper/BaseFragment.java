@@ -8,7 +8,6 @@ import android.view.View;
 
 public class BaseFragment extends Fragment {
     FragmentComponentManager fragmentComponentManager;
-    private boolean isCreated;
 
     public FragmentComponentManager getFragmentComponentManager() {
         return fragmentComponentManager;
@@ -22,9 +21,8 @@ public class BaseFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        if (!isCreated) fragmentComponentManager.triggerOnCreate(view, savedInstanceState);
         super.onViewCreated(view, savedInstanceState);
-        isCreated = true;
+        fragmentComponentManager.triggerOnCreate(view, savedInstanceState);
     }
 
     @Override
