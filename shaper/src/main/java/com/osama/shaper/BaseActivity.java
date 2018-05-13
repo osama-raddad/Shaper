@@ -58,6 +58,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         activityComponentManager.triggerOnStop();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        activityComponentManager.destroy();
+    }
 
     private void setupViewAnimation() {
         final ViewGroup viewGroup = (ViewGroup) getWindow().getDecorView().getRootView();

@@ -3,22 +3,21 @@ package com.osama.shaper;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.disposables.CompositeDisposable;
+
 
 @SuppressWarnings("unchecked")
 public class ActivityComponentManager<T extends Activity> {
     private T activity;
     private List<ActivityComponent> featureList = new ArrayList<>();
+    private final CompositeDisposable disposables = new CompositeDisposable();
+
 
     private ActivityComponentManager(T activity) {
         this.activity = activity;
@@ -46,27 +45,27 @@ public class ActivityComponentManager<T extends Activity> {
 
 
     synchronized void triggerOnCreate(Bundle mSavedInstanceState) {
-        Observable.from(featureList)
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
+        disposables.add(Observable.fromIterable(featureList)
                 .doOnError(throwable -> Log.e(FragmentComponent.class.getSimpleName(), throwable.getMessage(), throwable))
-                .subscribe(activityFeature -> activityFeature.onCreate(getCastedActivity(activity), mSavedInstanceState));
+                .subscribe(activityFeature -> activityFeature.onCreate(getCastedActivity(activity), mSavedInstanceState)));
     }
 
     synchronized void triggerOnResume() {
-        Observable.from(featureList)
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
+        disposables.add(Observable.fromIterable(featureList)
                 .doOnError(throwable -> Log.e(FragmentComponent.class.getSimpleName(), throwable.getMessage(), throwable))
-                .subscribe(activityFeature -> activityFeature.onResume(getCastedActivity(activity)));
+                .subscribe(activityFeature -> activityFeature.onResume(getCastedActivity(activity))));
     }
 
     synchronized void triggerOnStop() {
-        Observable.from(featureList)
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
+        disposables.add(Observable.fromIterable(featureList)
                 .doOnError(throwable -> Log.e(FragmentComponent.class.getSimpleName(), throwable.getMessage(), throwable))
-                .subscribe(activityFeature -> activityFeature.onStop(getCastedActivity(activity)));
+                .subscribe(activityFeature -> activityFeature.onStop(getCastedActivity(activity))));
+    }
+
+
+
+    void destroy(){
+        disposables.clear();
     }
 
 

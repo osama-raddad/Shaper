@@ -39,4 +39,10 @@ public class BaseFragment extends Fragment {
         super.onResume();
         fragmentComponentManager.triggerOnResume();
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        fragmentComponentManager.destroy();
+    }
 }
