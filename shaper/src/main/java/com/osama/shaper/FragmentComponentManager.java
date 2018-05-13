@@ -12,7 +12,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
 
 @SuppressWarnings("unchecked")
 public class FragmentComponentManager<T extends Fragment> {
@@ -47,18 +49,24 @@ public class FragmentComponentManager<T extends Fragment> {
 
     synchronized void triggerOnCreateView(LayoutInflater inflater, @Nullable Bundle savedInstanceState) {
         disposables.add(Observable.fromIterable(featureList)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(throwable -> Log.e(FragmentComponent.class.getSimpleName(), throwable.getMessage(), throwable))
                 .subscribe(fragmentFeature -> fragmentFeature.onCreateView(getCastedFragment(fragment), inflater, savedInstanceState)));
     }
 
     synchronized void triggerOnResume() {
         disposables.add(Observable.fromIterable(featureList)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(throwable -> Log.e(FragmentComponent.class.getSimpleName(), throwable.getMessage(), throwable))
                 .subscribe(fragmentComponent -> fragmentComponent.onResume(getCastedFragment(fragment))));
     }
 
     public void triggerOnCreated(View view, Bundle savedInstanceState) {
         disposables.add(Observable.fromIterable(featureList)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(throwable -> Log.e(FragmentComponent.class.getSimpleName(), throwable.getMessage(), throwable))
                 .subscribe(fragmentComponent -> fragmentComponent.onViewCreated(getCastedFragment(fragment), view, savedInstanceState)));
     }
