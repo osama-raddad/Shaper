@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -44,12 +45,12 @@ public class FragmentComponentManager<T extends Fragment> {
     }
 
 
-    synchronized void triggerOnCreate(View view, @Nullable Bundle savedInstanceState) {
+    synchronized void triggerOnCreateView(LayoutInflater inflater, @Nullable Bundle savedInstanceState) {
         Observable.from(featureList)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(throwable -> Log.e(FragmentComponent.class.getSimpleName(), throwable.getMessage(), throwable))
-                .subscribe(fragmentFeature -> fragmentFeature.onViewCreated(getCastedFragment(fragment), view, savedInstanceState));
+                .subscribe(fragmentFeature -> fragmentFeature.onCreateView(getCastedFragment(fragment), inflater, savedInstanceState));
     }
 
     synchronized void triggerOnResume() {
@@ -58,5 +59,13 @@ public class FragmentComponentManager<T extends Fragment> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(throwable -> Log.e(FragmentComponent.class.getSimpleName(), throwable.getMessage(), throwable))
                 .subscribe(fragmentComponent -> fragmentComponent.onResume(getCastedFragment(fragment)));
+    }
+
+    public void triggerOnCreated(View view, Bundle savedInstanceState) {
+        Observable.from(featureList)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnError(throwable -> Log.e(FragmentComponent.class.getSimpleName(), throwable.getMessage(), throwable))
+                .subscribe(fragmentComponent -> fragmentComponent.onViewCreated(getCastedFragment(fragment), view, savedInstanceState));
     }
 }

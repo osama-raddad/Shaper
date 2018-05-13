@@ -1,25 +1,30 @@
 package com.osama.shaper;
 
 import android.os.Bundle;
-import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 
 public abstract class FragmentComponent<T extends Fragment> {
     private
     ComponentView componentView;
+    private boolean isContentViewSet;
 
 
     private T fragment;
+    private LayoutInflater inflater;
 
-    public void onViewCreated(@NonNull T fragment, View rootView, @Nullable Bundle mSavedInstanceState) {
+    public void onCreateView(@NonNull T fragment, LayoutInflater inflater, @Nullable Bundle mSavedInstanceState) {
         this.fragment = fragment;
+        this.inflater = inflater;
+    }
+
+    public void onViewCreated(@NonNull T fragment, View view, @Nullable Bundle mSavedInstanceState) {
+
     }
 
 
@@ -37,7 +42,8 @@ public abstract class FragmentComponent<T extends Fragment> {
 
     @Nullable
     protected View setContentView(@LayoutRes int layout) {
-        if (componentView != null) {
+        if (componentView != null && !isContentViewSet) {
+            isContentViewSet = true;
             return LayoutInflater.from(fragment.getActivity()).inflate(layout, componentView);
         } else return null;
     }
