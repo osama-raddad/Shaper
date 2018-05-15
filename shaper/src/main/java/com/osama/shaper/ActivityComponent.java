@@ -2,6 +2,7 @@ package com.osama.shaper;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.view.LayoutInflater;
@@ -44,5 +45,13 @@ public class ActivityComponent<T extends Activity> {
     public ActivityComponent<T> setComponentView(ComponentView componentView) {
         if (this.componentView == null) this.componentView = componentView;
         return this;
+    }
+
+    protected T getActivity() {
+        return activity;
+    }
+
+    protected Context getContext() {
+        return activity;
     }
 }

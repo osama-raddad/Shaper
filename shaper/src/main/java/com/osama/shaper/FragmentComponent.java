@@ -1,5 +1,7 @@
 package com.osama.shaper;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
@@ -51,5 +53,17 @@ public abstract class FragmentComponent<T extends Fragment> {
     public FragmentComponent<T> setComponentView(ComponentView componentView) {
         if (this.componentView == null) this.componentView = componentView;
         return this;
+    }
+
+    protected T getFragment() {
+        return fragment;
+    }
+
+    protected Context getContext() {
+        return fragment.getContext();
+    }
+
+    protected Activity getActivity() {
+        return fragment.getActivity();
     }
 }
