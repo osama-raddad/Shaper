@@ -5,11 +5,9 @@ import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.support.annotation.LayoutRes
+import android.support.annotation.NonNull
 import android.view.LayoutInflater
 import android.view.View
-
-import io.reactivex.annotations.NonNull
-import io.reactivex.annotations.Nullable
 
 
 open class ActivityComponent<T : Activity> {
@@ -21,7 +19,7 @@ open class ActivityComponent<T : Activity> {
     protected val context: Context?
         get() = activity
 
-    open fun onCreate(@NonNull activity: T, @Nullable mSavedInstanceState: Bundle?) {
+    open fun onCreate( activity: T, mSavedInstanceState: Bundle?) {
         this.activity = activity
     }
 
@@ -38,7 +36,6 @@ open class ActivityComponent<T : Activity> {
         return componentView
     }
 
-    @Nullable
     protected fun setContentView(@LayoutRes layout: Int): View? {
         return if (componentView != null) {
             LayoutInflater.from(activity).inflate(layout, componentView)
