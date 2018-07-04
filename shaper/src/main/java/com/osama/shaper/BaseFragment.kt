@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
-class BaseFragment : Fragment() {
+open class BaseFragment : Fragment() {
     protected lateinit var fragmentComponentManager: FragmentComponentManager<*>
         private set
 
