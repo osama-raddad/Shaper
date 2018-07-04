@@ -8,4 +8,6 @@ internal class ToastComponent : ActivityComponent<MainActivity>() {
         super.onCreate(activity, mSavedInstanceState)
         Toast.makeText(activity, "Cool", Toast.LENGTH_SHORT).show()
     }
+
+
 }

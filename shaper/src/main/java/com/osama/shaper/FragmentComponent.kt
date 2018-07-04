@@ -24,25 +24,25 @@ abstract class FragmentComponent<T : Fragment> {
     protected val activity: Activity?
         get() = fragment.activity
 
-    fun onCreateView(fragment: T, inflater: LayoutInflater, mSavedInstanceState: Bundle?) {
+    open fun onCreateView(fragment: T, inflater: LayoutInflater, mSavedInstanceState: Bundle?) {
         this.fragment = fragment
         this.inflater = inflater
     }
 
-    fun onViewCreated(fragment: T, view: View, mSavedInstanceState: Bundle?) {
+    open fun onViewCreated(fragment: T, view: View, mSavedInstanceState: Bundle?) {
 
     }
 
 
-    fun onResume(fragment: T) {
+    open fun onResume(fragment: T) {
 
     }
 
-    fun onStop(fragment: T) {
+    open fun onStop(fragment: T) {
 
     }
 
-    fun getComponentView(): ComponentView? {
+    open fun getComponentView(): ComponentView? {
         return componentView
     }
 
@@ -54,7 +54,7 @@ abstract class FragmentComponent<T : Fragment> {
             null
     }
 
-    fun setComponentView(componentView: ComponentView): FragmentComponent<T> {
+    open fun setComponentView(componentView: ComponentView): FragmentComponent<T> {
         if (this.componentView == null) this.componentView = componentView
         return this
     }

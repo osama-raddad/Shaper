@@ -26,15 +26,15 @@ open class ActivityComponent<T : Activity> {
     }
 
 
-    fun onResume(@NonNull activity: T) {
+    open fun onResume(@NonNull activity: T) {
 
     }
 
-    fun onStop(activity: T) {
+    open fun onStop(activity: T) {
 
     }
 
-    fun getComponentView(): ComponentView? {
+    open fun getComponentView(): ComponentView? {
         return componentView
     }
 
