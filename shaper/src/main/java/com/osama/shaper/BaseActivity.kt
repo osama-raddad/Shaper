@@ -72,14 +72,17 @@ abstract class BaseActivity : AppCompatActivity() {
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private fun setupWindowAnimations() {
-        val slideStart = Slide(Gravity.START)
-        slideStart.duration = 200
-        window.enterTransition = slideStart
-        window.returnTransition = slideStart
+        try {
+            val slideStart = Slide(Gravity.START)
+            slideStart.duration = 200
+            window.enterTransition = slideStart
+            window.returnTransition = slideStart
 
-        val slideEnd = Slide(Gravity.END)
-        slideEnd.duration = 200
-        window.exitTransition = slideEnd
+            val slideEnd = Slide(Gravity.END)
+            slideEnd.duration = 200
+            window.exitTransition = slideEnd
+        } catch (e: Error) {
+        }
     }
 
 }
