@@ -70,17 +70,18 @@ abstract class BaseActivity : AppCompatActivity() {
         viewGroup.layoutTransition = layoutTransition
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private fun setupWindowAnimations() {
         try {
-            val slideStart = Slide(Gravity.START)
-            slideStart.duration = 200
-            window.enterTransition = slideStart
-            window.returnTransition = slideStart
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                val slideStart = Slide(Gravity.LEFT)
+                slideStart.duration = 200
+                window.enterTransition = slideStart
+                window.returnTransition = slideStart
 
-            val slideEnd = Slide(Gravity.END)
-            slideEnd.duration = 200
-            window.exitTransition = slideEnd
+                val slideEnd = Slide(Gravity.RIGHT)
+                slideEnd.duration = 200
+                window.exitTransition = slideEnd
+            }
         } catch (e: Error) {
         }
     }
