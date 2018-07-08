@@ -3,7 +3,6 @@ package com.osama.shaper
 import android.animation.LayoutTransition
 import android.os.Build
 import android.os.Bundle
-import android.support.annotation.RequiresApi
 import android.support.v7.app.AppCompatActivity
 import android.transition.Slide
 import android.view.Gravity

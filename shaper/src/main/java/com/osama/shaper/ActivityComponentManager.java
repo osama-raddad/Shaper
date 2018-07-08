@@ -7,11 +7,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import java8.util.stream.StreamSupport;
+
 
 @SuppressWarnings("unchecked")
 public class ActivityComponentManager<T extends Activity> {
     private T activity;
-    private List<ActivityComponent> featureList = new ArrayList<>();
+    private List<ActivityComponent> components = new ArrayList<>();
 
     private ActivityComponentManager(T activity) {
         this.activity = activity;
@@ -26,29 +28,30 @@ public class ActivityComponentManager<T extends Activity> {
     }
 
     public ActivityComponentManager add(ActivityComponent... activityComponent) {
-        if (featureList != null)
-            featureList.addAll(Arrays.asList(activityComponent));
+        if (components != null)
+            components.addAll(Arrays.asList(activityComponent));
         return this;
     }
 
     public ActivityComponentManager add(ActivityComponent activityComponent) {
-        if (featureList != null)
-            featureList.add(activityComponent);
+        if (components != null)
+            components.add(activityComponent);
         return this;
     }
 
     synchronized void triggerOnCreate(Bundle mSavedInstanceState) {
-        for (ActivityComponent component : featureList)
-            component.onCreate(getCastedActivity(activity), mSavedInstanceState);
+        StreamSupport.parallelStream(components)
+                .forEach(activityComponent -> activityComponent.onCreate(getCastedActivity(activity), mSavedInstanceState));
     }
 
     synchronized void triggerOnResume() {
-        for (ActivityComponent component : featureList)
-            component.onResume(getCastedActivity(activity));
+        StreamSupport.parallelStream(components)
+                .forEach(activityComponent -> activityComponent.onResume(getCastedActivity(activity)));
+
     }
 
     synchronized void triggerOnStop() {
-        for (ActivityComponent component : featureList)
-            component.onStop(getCastedActivity(activity));
+        StreamSupport.parallelStream(components)
+                .forEach(activityComponent -> activityComponent.onStop(getCastedActivity(activity)));
     }
 }

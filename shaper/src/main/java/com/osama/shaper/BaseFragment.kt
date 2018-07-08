@@ -11,8 +11,9 @@ open class BaseFragment : Fragment() {
         private set
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         fragmentComponentManager = FragmentComponentManager.getInstance(this)
+        super.onCreate(savedInstanceState)
+        fragmentComponentManager.triggerOnCreate(savedInstanceState)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -28,5 +29,20 @@ open class BaseFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         fragmentComponentManager.triggerOnResume()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        fragmentComponentManager.triggerOnStop()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        fragmentComponentManager.triggerOnStart()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        fragmentComponentManager.triggerOnDestroy()
     }
 }
