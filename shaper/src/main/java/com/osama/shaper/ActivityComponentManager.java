@@ -40,18 +40,18 @@ public class ActivityComponentManager<T extends Activity> {
     }
 
     synchronized void triggerOnCreate(Bundle mSavedInstanceState) {
-        StreamSupport.parallelStream(components)
-                .forEach(activityComponent -> activityComponent.onCreate(getCastedActivity(activity), mSavedInstanceState));
+        for (ActivityComponent activityComponent : components)
+            activityComponent.onCreate(getCastedActivity(activity), mSavedInstanceState);
     }
 
     synchronized void triggerOnResume() {
-        StreamSupport.parallelStream(components)
-                .forEach(activityComponent -> activityComponent.onResume(getCastedActivity(activity)));
+        for (ActivityComponent activityComponent : components)
+            activityComponent.onResume(getCastedActivity(activity));
 
     }
 
     synchronized void triggerOnStop() {
-        StreamSupport.parallelStream(components)
-                .forEach(activityComponent -> activityComponent.onStop(getCastedActivity(activity)));
+        for (ActivityComponent activityComponent : components)
+            activityComponent.onStop(getCastedActivity(activity));
     }
 }

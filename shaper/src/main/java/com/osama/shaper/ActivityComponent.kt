@@ -8,6 +8,7 @@ import android.support.annotation.LayoutRes
 import android.support.annotation.NonNull
 import android.view.LayoutInflater
 import android.view.View
+import io.reactivex.disposables.CompositeDisposable
 
 
 open class ActivityComponent<T : Activity> {
@@ -19,6 +20,8 @@ open class ActivityComponent<T : Activity> {
     protected val context: Context?
         get() = activity
 
+    protected val disposables = CompositeDisposable()
+
     open fun onCreate( activity: T, mSavedInstanceState: Bundle?) {
         this.activity = activity
     }
@@ -29,7 +32,7 @@ open class ActivityComponent<T : Activity> {
     }
 
     open fun onStop(activity: T) {
-
+        disposables.clear()
     }
 
     open fun getComponentView(): ComponentView? {

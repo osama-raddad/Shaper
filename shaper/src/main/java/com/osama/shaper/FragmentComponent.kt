@@ -8,6 +8,7 @@ import android.support.annotation.LayoutRes
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import io.reactivex.disposables.CompositeDisposable
 
 
 abstract class FragmentComponent<T : Fragment> {
@@ -25,6 +26,8 @@ abstract class FragmentComponent<T : Fragment> {
     protected val activity: Activity?
         get() = fragment.activity
 
+    protected val disposables = CompositeDisposable()
+
     open fun onCreate(mSavedInstanceState: Bundle?) {}
 
     open fun onCreateView(fragment: T, inflater: LayoutInflater, mSavedInstanceState: Bundle?) {
@@ -33,12 +36,13 @@ abstract class FragmentComponent<T : Fragment> {
     }
 
     open fun onViewCreated(fragment: T, view: View, mSavedInstanceState: Bundle?) {}
+
     open fun onResume(fragment: T) {
 
     }
 
     open fun onStop(fragment: T) {
-
+        disposables.clear()
     }
 
     open fun onStart(fragment: T) {
