@@ -13,10 +13,12 @@ import android.animation.LayoutTransition.CHANGE_APPEARING
 import android.animation.LayoutTransition.CHANGE_DISAPPEARING
 import android.animation.LayoutTransition.CHANGING
 import android.animation.LayoutTransition.DISAPPEARING
+import io.reactivex.disposables.CompositeDisposable
 
 abstract class BaseActivity : AppCompatActivity() {
     protected lateinit var activityComponentManager: ActivityComponentManager<*>
         private set
+    protected val disposables = CompositeDisposable()
 
 
     public override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,6 +49,8 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         activityComponentManager.triggerOnStop()
+        disposables.clear()
+        disposables.dispose()
     }
 
     private fun setupViewAnimation() {

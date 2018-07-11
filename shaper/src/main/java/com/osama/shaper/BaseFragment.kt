@@ -5,10 +5,12 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import io.reactivex.disposables.CompositeDisposable
 
 open class BaseFragment : Fragment() {
     protected lateinit var fragmentComponentManager: FragmentComponentManager<*>
         private set
+    protected val disposables = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         fragmentComponentManager = FragmentComponentManager.getInstance(this)
@@ -34,6 +36,8 @@ open class BaseFragment : Fragment() {
     override fun onStop() {
         super.onStop()
         fragmentComponentManager.triggerOnStop()
+        disposables.clear()
+        disposables.dispose()
     }
 
     override fun onStart() {

@@ -33,6 +33,7 @@ open class ActivityComponent<T : Activity> {
 
     open fun onStop(activity: T) {
         disposables.clear()
+        disposables.dispose()
     }
 
     open fun getComponentView(): ComponentView? {
