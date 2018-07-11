@@ -10,6 +10,7 @@ import io.reactivex.disposables.CompositeDisposable
 open class BaseFragment : Fragment() {
     protected lateinit var fragmentComponentManager: FragmentComponentManager<*>
         private set
+
     protected val disposables = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
