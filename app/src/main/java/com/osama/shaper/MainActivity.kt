@@ -16,10 +16,6 @@ class MainActivity : BaseActivity() {
         openFragment(MainFragment())
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
-
     private fun openFragment(fragment: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.container, fragment)
