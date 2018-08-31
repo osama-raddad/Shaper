@@ -16,7 +16,7 @@ import android.animation.LayoutTransition.DISAPPEARING
 import io.reactivex.disposables.CompositeDisposable
 
 abstract class BaseActivity : AppCompatActivity() {
-    protected  val activityComponentManager: ActivityComponentManager<*> = ActivityComponentManager.getInstance(this)
+    protected val activityComponentManager: ActivityComponentManager<*> = ActivityComponentManager.getInstance(this)
     protected val disposables = CompositeDisposable()
 
 
@@ -30,7 +30,6 @@ abstract class BaseActivity : AppCompatActivity() {
         val lt = LayoutTransition()
         lt.disableTransitionType(LayoutTransition.DISAPPEARING)
         mContainerView.layoutTransition = lt
-
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
@@ -46,6 +45,10 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         activityComponentManager.triggerOnStop()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
         disposables.clear()
         disposables.dispose()
     }
